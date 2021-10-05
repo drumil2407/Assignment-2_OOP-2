@@ -1,17 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace A1
 {
-	class Program
+    class Program
 	{
 
 
 		static void Main(string[] args)
 		{
-			//Task 1 part
-			//this will take input from user and input is card to pick
-
+            ///<summary>
+            ///Task 1 part
+            ///this will take input from user and input is card to pick
+            ///</summary>
+			Console.WriteLine("\n");
+            Console.WriteLine("Output of task 1");
+            Console.WriteLine("\n");
 			Console.WriteLine("Enter the number of cards to pick: ");
 			string line = Console.ReadLine();
 			if (int.TryParse(line, out int numCards))
@@ -25,6 +28,11 @@ namespace A1
 			{
 				Console.WriteLine("Please enter a valid number.");
 			}
+
+            Console.WriteLine("\n");
+            Console.WriteLine("Output of Task 2");
+			Console.WriteLine("\n");
+
 			//Task-2
 			Random random = new Random(1);
 			ParticleMovement particleMover = new ParticleMovement();
@@ -34,11 +42,11 @@ namespace A1
 							  "2 if a gravitational field is present\n3 for both fields\n");
 				char key = Console.ReadKey().KeyChar;
 				if (key != '0' && key != '1' && key != '2' && key != '3') return;
-				int movementRange = random.Next(1, 7) + random.Next(1, 7) + random.Next(1, 7);
-				particleMover.MovementRange = movementRange;
-				particleMover.SetMagneticField(key == '1' || key == '3');
-				particleMover.SetGravitationalField(key == '2' || key == '3');
-				Console.WriteLine($"\nParticle with a movement range of {movementRange} units" +
+
+				particleMover.MagneticField = (key == '1' || key == '3');
+				particleMover.GravitationalField = (key == '2' || key == '3');
+
+				Console.WriteLine($"\nParticle with a movement range of {particleMover.MovementRange} units" +
 								  $" moved a total distance of {particleMover.DistanceMoved} units.\n");
 			}
 
@@ -66,27 +74,22 @@ namespace A1
 			return pickedCards;
 		}
 		/// <summary>
-		/// Chooses a random value for a card (Ace, 2, 3, ... , Queen, King)
+		/// Use of enumerations for creating a Deck of cards.
 		/// </summary>
-		/// <returns>A string that represents the value of a card</returns>
 		enum Suit
 		{
-
 			Diamonds,
 			Hearts,
 			Clubs,
 			Spades
-
 		}
 
 		enum Faces
 		{
-
 			Jack,
 			Queen,
 			King,
 			Ace
-
 		}
 
 		private static string RandomValue()
@@ -135,61 +138,78 @@ namespace A1
 			}
 		}
 	}
+
 	//Task-2
 	class ParticleMovement
 	{
 		public const int BASE_MOVEMENT = 3;
 		public const int GRAVITY_MOVEMENT = 2;
 
-		//1.Setting up a property and backing field
+		///<summary>
+		///1.Setting up a property and backing field
+		///</summary>
 		private int movementRange;
 		public int MovementRange
 		{
 			get { return movementRange; }
-			set { movementRange = value; }
-
+			set { movementRange = value;}
 		}
 
-		//2. Setting up a property and a backing field
+		///<summary>
+		///2. Setting up a property and a backing field
+		///<summary>
 		private bool gravitationalField;
 		public bool GravitationalField
 		{
 			get { return gravitationalField; }
 			set { gravitationalField = value; }
-
 		}
-		//3. Setting up a property and a backing field
+
+		///<summary>
+		///3. Setting up a property and a backing field
+		///</summary>
 		private bool magneticField;
 		public bool MagneticField
 		{
-
 			get { return magneticField; }
-			set { gravitationalField = value; }
-
+			set { magneticField = value; }
 		}
-		//4.Auto implemented property
 
+		///<summary>
+		///4.Auto implemented property
+		///<summary>
 		public double Distance
 		{
 			get; private set;
 
 		}
 
-
-		public decimal MagneticMultiplier = 1M;
-		public int GravityMovement = 0;
-		public int DistanceMoved;
-
-		public void CalculateDistance()
+		/// <summary>
+		/// 6. Adding ParticleMovement constructor 
+		/// </summary>
+		public ParticleMovement()
 		{
-			DistanceMoved = (int)(movementRange * MagneticMultiplier) + BASE_MOVEMENT + GravityMovement;
+			MovementRange = movementRange;
+			CalculateDistance();
+			GetMovementRange();
 		}
 
-
-
-
+		/// <summary>
+		/// 5.Modifying distance method which checks basemovemnet, gravity movement and movement range
+		/// </summary>
+		public int DistanceMoved;
+		public void CalculateDistance()
+		{
+				DistanceMoved = movementRange + BASE_MOVEMENT + GRAVITY_MOVEMENT;	
+		}
+		/// <summary>
+		/// getmovementrange method gives result of movement range calculations
+		/// </summary>
+		
+		static Random random = new Random(1);
+		public void GetMovementRange()
+		{
+			movementRange = random.Next(1, 7) + random.Next(1, 7) + random.Next(1, 7);
+		}
 	}
-
-
-
 }
