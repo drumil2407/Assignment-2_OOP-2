@@ -74,7 +74,7 @@ namespace A1
 			return pickedCards;
 		}
 		/// <summary>
-		/// Use of enumerations for creating a Deck of cards.
+		/// Use of enumeration for creating a Deck of cards.
 		/// </summary>
 		enum Suit
 		{
